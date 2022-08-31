@@ -39,7 +39,17 @@ router.get('/:id', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-  res.send('PUT /places/:id stub')
+  console.log('params and body', req.body, req.params)
+
+  db.Place.findByIdAndUpdate(req.params.id, req.body)
+  .then(place => {
+      res.render('places/show', { place })
+  })
+  .catch(err => {
+      console.log('err', err)
+      res.render('error404')
+  })
+ // res.send('PUT /places/:id stub')
 })
 
 router.delete('/:id', (req, res) => {
@@ -47,7 +57,15 @@ router.delete('/:id', (req, res) => {
 })
 
 router.get('/:id/edit', (req, res) => {
-  res.send('GET edit form stub')
+  db.Place.findById(req.params.id)
+  .then(place => {
+      res.render('places/edit', { place })
+  })
+  .catch(err => {
+      console.log('err', err)
+      res.render('error404')
+  })
+ // res.send('GET edit form stub')
 })
 
 router.post('/:id/rant', (req, res) => {
